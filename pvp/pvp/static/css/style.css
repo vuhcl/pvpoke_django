@@ -4716,6 +4716,7 @@ a.pokebattler {
     max-width: 48%;
     margin-bottom: 5px;
     font-size: 16px;
+    padding: 5px;
   }
 
   .ranking-categories a {
