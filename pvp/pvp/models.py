@@ -85,27 +85,11 @@ class Pokemon(models.Model):
     species_id = models.CharField()
     data = DataClassField(dataClass=PokemonData)
     
-class Ranking(models.Model):
-    position = models.PositiveSmallIntegerField()
-    species_name = models.CharField()
-    species_id = models.SlugField()
-    rating = models.PositiveSmallIntegerField()
-    
 class Format(models.Model):
     title = models.CharField(max_length=64)
     cup = models.CharField(max_length=32)
     cp = models.PositiveSmallIntegerField()
     meta = models.CharField(max_length=32)
-
-# class Scenario(models.Model):
-#     cup = models.ForeignKey(Format, on_delete=models.CASCADE)  
-#     rank = models.ForeignKey(Ranking, on_delete=models.CASCADE)
-#     name = models.CharField()
-#     slug = models.SlugField()
-#     self_shields = models.SmallIntegerField()
-#     opponent_shields = models.SmallIntegerField()
-#     self_energy = models.SmallIntegerField()
-#     opponent_energy = models.SmallIntegerField()
     
     
     

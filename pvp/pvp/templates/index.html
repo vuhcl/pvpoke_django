@@ -7,7 +7,7 @@
 	<p>Welcome to PvPoke.com! We're an open-source tool for simulating, ranking, and building teams for Pokemon GO PvP (player versus player) battles. Check out the links below to get started.</p>
 
 	{% for item in items %}
-		<a href="{% url item.src %}" class="button">
+		<a href="{% url item.src %}" class="button" hx-ext="preload" preload="mousedown">
 			<span class="btn-content-wrap">
 				<span class="btn-icon btn-icon-{{ item.src }}"></span>
 				<span class="btn-label">

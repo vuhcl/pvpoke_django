@@ -21,6 +21,7 @@
       <script type="text/javascript" src="{% static 'js/htmx.js' %}" defer></script>
       <script type="text/javascript" src="{% static 'ext/debug.js' %}" defer></script>
       <script type="text/javascript" src="{% static 'ext/hyperscript.js' %}" defer></script>
+      <script type="text/javascript" src="{% static 'ext/preload.js' %}" defer></script>
     {% endcompress %}
 
   </head>
@@ -47,8 +48,8 @@
             <a class="icon-rankings" href="/rankings/">
               Rankings <span></span>
             </a>
-            <div class="submenu">
-              <div class="submenu-wrap">
+            <div class="submenu" hx-ext="preload">
+              <div class="submenu-wrap" preload="mousedown">
                 <a class="nav-great" href="/rankings/all/1500/overall/">Great League</a>
                 <a class="nav-ultra" href="/rankings/all/2500/overall/">Ultra League</a>
                 <a class="nav-master" href="/rankings/all/10000/overall/">Master League</a>

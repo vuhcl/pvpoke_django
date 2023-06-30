@@ -2318,8 +2318,7 @@ a.download-csv {
 }
 
 .rankings-container {
-  margin-top: 20px;
-  max-height: 600px;
+  max-height: 500px;
   overflow-y: scroll;
 }
 .rankings-container.threats, .rankings-container.alternatives {
@@ -2356,6 +2355,7 @@ a.download-csv {
   padding: 5px 10px;
   border-radius: 8px;
   margin-bottom: 5px;
+  margin-right: 10px;
   border-left: 20px solid rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -2801,10 +2801,10 @@ a.download-csv {
   border: 1px solid #000;
   color: #000;
   font-size: 12px;
-  -webkit-transition: all 0.3s ease-out 0s;
-  -moz-transition: all 0.3s ease-out 0s;
-  -o-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
+  -webkit-transition: all 0.1s ease-out 0s;
+  -moz-transition: all 0.1s ease-out 0s;
+  -o-transition: all 0.1s ease-out 0s;
+  transition: all 0.1s ease-out 0s;
 }
 .rank .details .detail-section .ranking-header.stat-toggle a.show-move-stats.on {
   background: #444;
