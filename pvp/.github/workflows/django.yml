@@ -21,6 +21,9 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Set Working Directory
+      run: |
+        python os.chdir(./pvp)
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
