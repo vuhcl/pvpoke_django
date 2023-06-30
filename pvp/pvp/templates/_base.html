@@ -1,0 +1,72 @@
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PvPoke | Open-Source Battle Simulator, Rankings &amp; Team Building for Pokemon GO PvP{% endblock %}</title>
+    
+    <meta name="apple-mobile-web-app-capable">
+    <meta name="mobile-web-app-capable">
+
+    {% compress css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    {% endcompress %}
+
+    {% compress js %}
+      <script type="text/javascript" src="{% static 'js/htmx.js' %}" defer></script>
+      <script type="text/javascript" src="{% static 'ext/debug.js' %}" defer></script>
+      <script type="text/javascript" src="{% static 'ext/hyperscript.js' %}" defer></script>
+    {% endcompress %}
+
+  </head>
+  <body hx-ext="debug" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+    <header>
+      <div class="header-wrap">
+        <a href="/"><img src="{% static 'img/themes/sunflower/header.png' %}" title="PvPoke.com" /></a>
+        
+        <div class="menu">
+          <div class="parent-menu">
+            <a class="icon-battle" href="/battle/">
+              Battle<span></span>
+            </a>
+            <div class="submenu">
+              <div class="submenu-wrap">
+                <a class="nav-great" href="/battle/">Single Battle</a>
+                <a class="nav-ultra" href="/battle/multi/">Multi Battle</a>
+                <a class="nav-master" href="/battle/matrix/">Matrix Battle</a>
+              </div>
+            </div>
+          </div>
+          <div class="parent-menu">
+            <a class="icon-rankings" href="/rankings/">
+              Rankings <span></span>
+            </a>
+            <div class="submenu">
+              <div class="submenu-wrap">
+                <a class="nav-great" href="/rankings/all/1500/overall/">Great League</a>
+                <a class="nav-ultra" href="/rankings/all/2500/overall/">Ultra League</a>
+                <a class="nav-master" href="/rankings/all/10000/overall/">Master League</a>
+                <a href="/custom-rankings/">Custom Rankings</a>
+              </div>
+            </div>
+          </div>
+          <a class="icon-team" href="/team-builder/">Team Builder</a>
+        </div>
+      </div>
+    </header>
+    
+    <div class="main-wrap">
+      <div id="main">
+        {% block main %}
+        {% endblock main %}
+      </div>
+    </div>
+    
+  </body>
+</html>

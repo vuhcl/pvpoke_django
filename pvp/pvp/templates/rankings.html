@@ -1,0 +1,53 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}Rankings | PvPoke{% endblock %}
+{% block main %}
+  <h1>Rankings</h1>
+  <div class="section league-select-container white" hx-target="#rankings">
+    <div class="ranking-filters flex" hx-trigger="change">
+      <div class="ranking-filter">
+        <label for="format-select"><h4>Format</h4><label>
+        <select class="format-select" name="format" hx-push-url="true">
+          <option hx-get="/rankings/all/1500/{{current_category}}" value="great" selected>Great League</option>
+          <option hx-get="/rankings/all/2500/{{current_category}}" value="ultra">Ultra League</option>
+          <option hx-get="/rankings/all/10000/{{current_category}}" value="master">Master League</option>
+          {% for format in formats %}
+            <option hx-get="/rankings/{{format.cup}}/{{format.cp}}/{{current_category}}"
+            value="{{format}}">{{format.title}} </option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="ranking-filter">
+        <label for="category-select"><h4>Sort By</h4><label>
+        <select class="category-select" name="category">
+          {% for category in categories %}
+            <option hx-get="/rankings/{{current_format}}/{{current_cp}}/{{category}}/"
+             value="{{category}}">{{category|capfirst}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    
+    <div class="ranking-checks flex">
+        <div class="check move-counts" _="on click toggle .on on me then toggle .show-move-counts on .rankings-container" style="margin-bottom:10px; margin-right:15px;"><span></span>Show move counts</div>
+        <div class="check tabs" _="on click toggle .on on me then toggle .detail-tabs-on on .rankings-container" style="margin-bottom:10px; margin-right:15px;"><span></span>Show details in tabs</div>
+    </div>
+
+    <div class="poke-search-container">
+        <input class="poke-search" context="ranking-search" type="text" placeholder="Search Pokemon" />
+        <a href="#" class="search-info" title="Search Help">?</a>
+        <a href="#" class="search-traits" title="Search Traits">+</a>
+    </div>
+
+    <div hx-get="{{current_format}}/{{current_cp}}/{{current_category}}/" hx-trigger="load" hx-indicator=".htmx-indicator" class="rankings-container clear">
+      <div class="ranking-header">Pokemon</div>
+      <div class="ranking-header right">Score</div>
+      <div id="rankings" class="rankings-container clear" hx-swap="outerHTML">
+        <h2 class="loading">Loading data <img class="htmx-indicator" width="20" src="{% static "img/bars.svg" %}"/> </h2>
+      </div>
+    </div>
+
+</div>
+
+{% endblock %}

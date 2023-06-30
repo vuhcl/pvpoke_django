@@ -1,0 +1,4 @@
+{% load get_pokemon_info %}
+{% for pokemon in rankings %}
+    {% ranking_item pokemon forloop.counter %}
+{% endfor %}
