@@ -7,5 +7,5 @@ from . import HtmxHttpRequest
 
 @require_GET
 def get_tab(request: HtmxHttpRequest, tab:str) -> HttpResponse:
-    template = f"tabs_{tab}.html"
+    template = f"tab_{tab}.html"
     return render(request, template)
