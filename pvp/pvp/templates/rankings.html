@@ -1,19 +1,16 @@
 {% extends "_base.html" %}
 {% load static %}
-{% block title %}Rankings | PvPoke{% endblock %}
+{% block title %}{{current_scenario.format}} Rankings | PvPoke{% endblock %}
 {% block main %}
   <h1>Rankings</h1>
-  <div class="section league-select-container white" hx-target="#rankings">
+  <div class="section league-select-container white" hx-target="#rankings" hx-ext="preload">
     <div class="ranking-filters flex" hx-trigger="change">
       <div class="ranking-filter">
         <label for="format-select"><h4>Format</h4><label>
         <select class="format-select" name="format" hx-push-url="true">
-          <option hx-get="/rankings/all/1500/{{current_category}}" value="great" selected>Great League</option>
-          <option hx-get="/rankings/all/2500/{{current_category}}" value="ultra">Ultra League</option>
-          <option hx-get="/rankings/all/10000/{{current_category}}" value="master">Master League</option>
           {% for format in formats %}
-            <option hx-get="/rankings/{{format.cup}}/{{format.cp}}/{{current_category}}"
-            value="{{format}}">{{format.title}} </option>
+            <option hx-get="{{format.get_absolute_url}}{{current_scenario.category}}"
+            value="{{format}}">{{format}}</option>
           {% endfor %}
         </select>
       </div>
@@ -22,7 +19,7 @@
         <label for="category-select"><h4>Sort By</h4><label>
         <select class="category-select" name="category">
           {% for category in categories %}
-            <option hx-get="/rankings/{{current_format}}/{{current_cp}}/{{category}}/"
+            <option hx-get="{{current_scenario.get_absolute_url}}"
              value="{{category}}">{{category|capfirst}}</option>
           {% endfor %}
         </select>
@@ -40,7 +37,7 @@
         <a href="#" class="search-traits" title="Search Traits">+</a>
     </div>
 
-    <div hx-get="{{current_format}}/{{current_cp}}/{{current_category}}/" hx-trigger="load" class="rankings-container clear">
+    <div hx-get="{{current_scenario.get_absolute_url}}/" hx-trigger="load" class="rankings-container clear">
       <div class="ranking-header">Pokemon</div>
       <div class="ranking-header right">Score</div>
       <div id="rankings" class="rankings-container clear" hx-swap="outerHTML">

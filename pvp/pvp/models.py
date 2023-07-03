@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.core.validators import MinValueValidator, MaxValueValidator
 import math
 
 class Move(models.Model):
@@ -10,12 +11,12 @@ class Move(models.Model):
     power = models.IntegerField()
     cooldown = models.IntegerField()
     archetype = models.CharField(null=True)
-    
-    def __str__(self):
-        return self.name 
     class Meta:
         abstract = True
-
+        
+    def __str__(self):
+        return self.name 
+    
 class FastMove(Move):
     energy_gain = models.IntegerField()
     
@@ -59,25 +60,25 @@ class Format(models.Model):
     cup = models.CharField(max_length=32)
     cp = models.PositiveSmallIntegerField()
     meta = models.CharField(max_length=32)
+    show = models.BooleanField(default=True)
     
     def __str__(self) -> str:
         return self.title
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse("rankings", kwargs={"cup": self.cup, "cp": self.cp})
     
-class Ranking(models.Model):
+class Scenario(models.Model):
+    category = models.CharField()
     format = models.ForeignKey(Format, on_delete=models.CASCADE)
-    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
-    position = models.PositiveSmallIntegerField()
-    score = models.FloatField()
-    matchups = models.ManyToManyField(Pokemon, through="Matchup", related_name="opponent", blank=True)
-    moves = models.JSONField(null=True, blank=True)
-    moveset = ArrayField(base_field=models.CharField(), blank=True)
-    scores = ArrayField(base_field=models.FloatField())
-    stats = models.JSONField(null=True, blank=True)
-
-class Matchup(models.Model):
-    rating = models.PositiveSmallIntegerField()
-    pokemon = models.ForeignKey(Ranking, on_delete=models.CASCADE)
-    opponent = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return self.category.capitalize()
+    
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return self.format.get_absolute_url()+self.category
+    
     
 def get_move_count(fast_move:FastMove, charged_move:ChargedMove) -> list[int]:
     first = math.ceil((charged_move.energy * 1) / fast_move.energy_gain)
@@ -107,6 +108,41 @@ def get_move_str(moveset: list[str]) -> str:
     move_str += '</div>'
     return move_str
     
+class Ranking(models.Model):
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE)
+    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
+    position = models.PositiveSmallIntegerField()
+    score = models.FloatField()
+    matchups = models.ManyToManyField(
+        Pokemon,
+        through="Matchup", 
+        through_fields=("pokemon", "opponent"), 
+        blank=True,
+        related_name="+"
+        )
+    counters = models.ManyToManyField(
+        Pokemon, 
+        through="Counter",
+        through_fields=("pokemon", "opponent"),
+        blank=True,
+        related_name="+"
+        )
+    moves = models.JSONField(null=True, blank=True)
+    moveset = ArrayField(base_field=models.CharField(), blank=True)
+    scores = ArrayField(base_field=models.FloatField())
+    stats = models.JSONField(null=True, blank=True)
     
+    @property
+    def move_str(self) -> str:
+        return get_move_str(self.moveset)    
         
-    
+class Matchup(models.Model):
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(500)])
+    pokemon = models.ForeignKey(Ranking, on_delete=models.CASCADE)
+    opponent = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
+
+class Counter(models.Model):
+    rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(500)])
+    pokemon = models.ForeignKey(Ranking, on_delete=models.CASCADE)
+    opponent = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
+              

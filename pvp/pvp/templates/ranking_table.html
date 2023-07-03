@@ -4,12 +4,12 @@
         hx-trigger="intersect once"
         hx-target="#target"
         hx-swap="beforeend">
-        {% for pokemon in rankings %}
-            {% comment %} {% ranking_item pokemon rankings.start_index forloop.counter %}     {% endcomment %}
+        {% for ranking in rankings %}
+            {% include "ranking_item.html" %}
         {% endfor %}
     </div>
 {% else %}
-    {% for pokemon in rankings %}
-        {% comment %} {% ranking_item pokemon rankings.start_index forloop.counter %}     {% endcomment %}
+    {% for ranking in rankings %}
+        {% include "ranking_item.html" %}
     {% endfor %}
 {% endif %}

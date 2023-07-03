@@ -1,16 +1,16 @@
 <div class="rankings-container" _="on intersection(intersecting) having threshold 0.5 if intersecting transition opacity to 1 else transition opacity to 0.8 ">
-    <div class="rank {{type_1}}" type-1="{{type_1}}" type-2="{{type_2}}" data="{{data}}" _="on click toggle .selected on me then toggle .active on #detail-{{position}}">
+    <div class="rank {{ranking.pokemon.types|first}}" type-1="{{ranking.pokemon.types|first}}" type-2="{{ranking.pokemon.types|last}}" data="{{ranking.pokemon.species_id}}" _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}}">
         <div class="expand-label"></div>
         <div class="name-container">
-            <span class="number">#{{position}}</span>
-            <span class="name">{{name}}</span>
-            {{move_str|safe}}
+            <span class="number">#{{ranking.position}}</span>
+            <span class="name">{{ranking.pokemon.species_name}}</span>
+            {{ranking.move_str|safe}}
         </div>
         <div class="rating-container">
-            <div class="rating score-rating">{{score}}</div>
+            <div class="rating score-rating">{{ranking.score}}</div>
             <div class="clear"></div>
         </div>
-        <div id="detail-{{position}}" class="details">
+        <div id="detail-{{ranking.position}}" class="details">
             <div id="tabs" hx-target="#tabs-contents" class="detail-section detail-tab-nav" _="on htmx:afterOnLoad take .active for event.target">
                 <a class="tab-moves active" hx-get="{% url "tab" "matchups"%}"><span class="icon"></span>Matchups</a>
                 <a class="tab-moves" hx-get="{% url "tab" "moves"%}"><span class="icon"></span>Moves</a>
