@@ -40,11 +40,11 @@ class Pokemon(models.Model):
     species_id = models.CharField()
     fast_moves = models.ManyToManyField(FastMove)
     charged_moves = models.ManyToManyField(ChargedMove)
-    elite_moves = models.ManyToManyField(Move, blank=True, null=True)
-    tags = models.ManyToManyField(Tag, blank=True, null=True)
+    elite_moves = ArrayField(base_field=models.CharField(), blank=True, null=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     level_25CP = models.PositiveIntegerField(null=True, blank=True)
     base_stats = models.JSONField()
-    types = models.JSONField()
+    types = ArrayField(base_field=models.CharField(blank=True, default="none"), size=2)
     default_ivs = models.JSONField(null=True, blank=True)
     buddy_distance = models.SmallIntegerField(null=True, blank=True)
     third_move_cost = models.PositiveIntegerField(blank=True, default=0)
@@ -65,19 +65,19 @@ class Format(models.Model):
     
 class Ranking(models.Model):
     format = models.ForeignKey(Format, on_delete=models.CASCADE)
-    pokemon = models.ForeignKey(Pokemon)
+    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
     position = models.PositiveSmallIntegerField()
-    score = models.FloatField(max_value=100)
-    matchups = models.ManyToManyField(Pokemon, through="Matchup", null=True, blank=True)
+    score = models.FloatField()
+    matchups = models.ManyToManyField(Pokemon, through="Matchup", related_name="opponent", blank=True)
     moves = models.JSONField(null=True, blank=True)
-    moveset = ArrayField(null=True, blank=True)
-    scores = ArrayField()
+    moveset = ArrayField(base_field=models.CharField(), blank=True)
+    scores = ArrayField(base_field=models.FloatField())
     stats = models.JSONField(null=True, blank=True)
 
 class Matchup(models.Model):
-    rating = models.PositiveSmallIntegerField(max_value=1000)
-    pokemon = models.ForeignKey(Ranking)
-    opponent = models.ForeignKey(Pokemon)
+    rating = models.PositiveSmallIntegerField()
+    pokemon = models.ForeignKey(Ranking, on_delete=models.CASCADE)
+    opponent = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
     
 def get_move_count(fast_move:FastMove, charged_move:ChargedMove) -> list[int]:
     first = math.ceil((charged_move.energy * 1) / fast_move.energy_gain)

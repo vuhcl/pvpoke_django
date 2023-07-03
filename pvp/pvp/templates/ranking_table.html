@@ -1,5 +1,3 @@
-{% load get_pokemon_info %}
-
 {% if rankings.has_next %}
     <div id="target" 
         hx-get="?page={{rankings.next_page_number}}" 
@@ -7,11 +5,11 @@
         hx-target="#target"
         hx-swap="beforeend">
         {% for pokemon in rankings %}
-            {% ranking_item pokemon rankings.start_index forloop.counter %}    
+            {% comment %} {% ranking_item pokemon rankings.start_index forloop.counter %}     {% endcomment %}
         {% endfor %}
     </div>
 {% else %}
     {% for pokemon in rankings %}
-        {% ranking_item pokemon rankings.start_index forloop.counter %}    
+        {% comment %} {% ranking_item pokemon rankings.start_index forloop.counter %}     {% endcomment %}
     {% endfor %}
 {% endif %}
