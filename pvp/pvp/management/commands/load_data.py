@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     )
             else:
                 ChargedMove.objects.create(
-                    name=m["name"]
+                    name=m["name"],
                     move_id=m["moveId"],
                     energy=m["energy"],
                     abbreviation=m.get("abbreviation", None),
