@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from functools import lru_cache
 import math
 
 class Move(models.Model):
@@ -14,11 +15,10 @@ class Move(models.Model):
     class Meta:
         abstract = True
         
-    def __str__(self):
-        return self.name 
-    
 class FastMove(Move):
     energy_gain = models.IntegerField()
+    def __str__(self):
+        return self.name 
     
 class ChargedMove(Move):
     move_id = models.CharField()
@@ -29,6 +29,8 @@ class ChargedMove(Move):
     buff_self = models.JSONField(null=True, blank=True)
     buff_opponent = models.JSONField(null=True, blank=True)
     buff_apply_chance = models.FloatField(null=True, blank=True)
+    def __str__(self):
+        return self.name 
     
 class Tag(models.Model):
     tag = models.CharField()
@@ -64,6 +66,8 @@ class Format(models.Model):
     
     def __str__(self) -> str:
         return self.title
+    
+    @lru_cache
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse("rankings", kwargs={"cup": self.cup, "cp": self.cp})
@@ -79,13 +83,14 @@ class Scenario(models.Model):
         from django.urls import reverse
         return self.format.get_absolute_url()+self.category
     
-    
+@lru_cache    
 def get_move_count(fast_move:FastMove, charged_move:ChargedMove) -> list[int]:
     first = math.ceil((charged_move.energy * 1) / fast_move.energy_gain)
     second = math.ceil((charged_move.energy * 2) / fast_move.energy_gain) - first
     third = math.ceil((charged_move.energy * 3) / fast_move.energy_gain) - first - second
     return [first, second, third]
 
+@lru_cache
 def get_charged_move_str(fast_move:FastMove, charged_move:ChargedMove) -> str:
     move_count = get_move_count(fast_move, charged_move)
     cm_count = str(move_count[0])
@@ -95,6 +100,7 @@ def get_charged_move_str(fast_move:FastMove, charged_move:ChargedMove) -> str:
         cm_count += '.'
     return f', {charged_move.name}<span class="count">{cm_count}</span>'
 
+@lru_cache
 def get_move_str(moveset: list[str]) -> str:
     fast_move = FastMove.objects.get(move_id=moveset[0])
     fm_duration = fast_move.cooldown/500

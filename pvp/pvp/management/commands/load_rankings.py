@@ -1,8 +1,7 @@
+from functools import lru_cache
 from django.core.management.base import BaseCommand
 from pvp.models import Format, Pokemon, Ranking, Matchup, Counter, Scenario
 import json, glob
-
-directory = "pvp/fixtures/rankings/"
 
 def create_ranking(item, i:int, scenario:Scenario) -> Ranking:
         ranking, created = Ranking.objects.get_or_create(
@@ -30,25 +29,29 @@ def create_ranking(item, i:int, scenario:Scenario) -> Ranking:
                 pokemon=ranking
                 )    
         return ranking
-
+    
 class Command(BaseCommand):
     help = 'Load JSON rankings data'
 
-    def handle(self, debug=True, *args, **options):
-        if debug:
-            formats = Format.objects.filter(cup="all")
-        else:
-            formats = Format.objects.filter(show=True)
+    def handle(self, *args, **options):
+        dir = "pvp/pvp/fixtures/rankings"
+        formats = Format.objects.filter(show=True)
                         
         for format in formats:
-            for filename in glob.iglob("pvp/fixtures/rankings/{format.cup}/*/rankings-*.json"):
-                k = filename.find("/rankings-")
-                begin = filename[:k].rfind("/")
-                category = filename[begin+1: k]
-                scenario = Scenario.objects.create(category=category, format=format)
-                with open(filename) as file:
-                    data = json.load(file)
-                for i in range(len(data)):
-                    create_ranking(data[i], i, scenario)
-        
-    
+            for filename in glob.iglob(f'../{dir}/{format.cup}/*/rankings-{format.cp}.json'):
+                print(filename)
+                self.create_ranking_from_file(filename, format.cup, format.cp)
+                
+    @lru_cache()
+    def create_ranking_from_file(self, file:str, cup:str, cp:int):   
+        format = Format.objects.get(cup=cup, cp=cp)
+        end = file.find("/rankings-")
+        begin = file[:end].rfind("/")
+        category = file[begin+1: end]
+        scenario = Scenario.objects.create(category=category, format=format)
+        obj_lst = []
+        with open(file) as f:
+            data = json.load(f)
+        for i in range(len(data)):
+            obj_lst.append(create_ranking(data[i], i, scenario))
+        return obj_lst

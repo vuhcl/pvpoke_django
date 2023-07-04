@@ -21,10 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Import the Secret Manager client library.
 from google.cloud import secretmanager
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 def access_secret_version(
     project_id: str, secret_id: str, version_id: str
-) -> secretmanager.AccessSecretVersionResponse:
+):
     """
     Access the payload for the given secret version if one exists. The version
     can be a version number as a string (e.g. "5") or an alias (e.g. "latest").
@@ -39,9 +40,8 @@ def access_secret_version(
     # Access the secret version.
     response = client.access_secret_version(request={"name": name})
     payload = response.payload.data.decode("UTF-8")
-    return payload
+    return response
     
-
 SECRET_KEY = access_secret_version("pvpoke-django", "pvpoke-django", "1")
 
 # SECURITY WARNING: don't run with debug turned on in production!
