@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from django.core.validators import MinValueValidator, MaxValueValidator
 from functools import lru_cache
-import math
 
 class Move(models.Model):
     name = models.CharField()
@@ -54,6 +52,14 @@ class Pokemon(models.Model):
     released = models.BooleanField(null=True, blank=True)
     family = models.JSONField(null=True, blank=True)
     
+    @property
+    def type1(self):
+        return self.types[0]
+    
+    @property
+    def type2(self):
+        return self.types[1]
+    
     def __str__(self) -> str:
         return self.species_name
     
@@ -70,7 +76,7 @@ class Format(models.Model):
     @lru_cache
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse("rankings", kwargs={"cup": self.cup, "cp": self.cp})
+        return reverse("rankings", kwargs={"format": self.cup, "cp": self.cp})
     
 class Scenario(models.Model):
     category = models.CharField()
@@ -82,73 +88,3 @@ class Scenario(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return self.format.get_absolute_url()+self.category
-    
-@lru_cache    
-def get_move_count(fast_move:FastMove, charged_move:ChargedMove) -> list[int]:
-    first = math.ceil((charged_move.energy * 1) / fast_move.energy_gain)
-    second = math.ceil((charged_move.energy * 2) / fast_move.energy_gain) - first
-    third = math.ceil((charged_move.energy * 3) / fast_move.energy_gain) - first - second
-    return [first, second, third]
-
-@lru_cache
-def get_charged_move_str(fast_move:FastMove, charged_move:ChargedMove) -> str:
-    move_count = get_move_count(fast_move, charged_move)
-    cm_count = str(move_count[0])
-    if move_count[0] > move_count[1]:
-        cm_count += '-'
-    if (move_count[2] < move_count[1]) and (move_count[0]==move_count[1]):
-        cm_count += '.'
-    return f', {charged_move.name}<span class="count">{cm_count}</span>'
-
-@lru_cache
-def get_move_str(moveset: list[str]) -> str:
-    fast_move = FastMove.objects.get(move_id=moveset[0])
-    fm_duration = fast_move.cooldown/500
-    move_str = f'<div class="moves">{fast_move.name}<span class="count fast">{int(fm_duration)}</span>'
-    
-    charged_move_1 = ChargedMove.objects.get(move_id=moveset[1])
-    move_str += get_charged_move_str(fast_move, charged_move_1)
-    if len(moveset) > 2:
-        charged_move_2 = ChargedMove.objects.get(move_id=moveset[2])
-        move_str += get_charged_move_str(fast_move, charged_move_2)
-    move_str += '</div>'
-    return move_str
-    
-class Ranking(models.Model):
-    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE)
-    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
-    position = models.PositiveSmallIntegerField()
-    score = models.FloatField()
-    matchups = models.ManyToManyField(
-        Pokemon,
-        through="Matchup", 
-        through_fields=("pokemon", "opponent"), 
-        blank=True,
-        related_name="+"
-        )
-    counters = models.ManyToManyField(
-        Pokemon, 
-        through="Counter",
-        through_fields=("pokemon", "opponent"),
-        blank=True,
-        related_name="+"
-        )
-    moves = models.JSONField(null=True, blank=True)
-    moveset = ArrayField(base_field=models.CharField(), blank=True)
-    scores = ArrayField(base_field=models.FloatField())
-    stats = models.JSONField(null=True, blank=True)
-    
-    @property
-    def move_str(self) -> str:
-        return get_move_str(self.moveset)    
-        
-class Matchup(models.Model):
-    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(500)])
-    pokemon = models.ForeignKey(Ranking, on_delete=models.CASCADE)
-    opponent = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
-
-class Counter(models.Model):
-    rating = models.PositiveSmallIntegerField(validators=[MaxValueValidator(500)])
-    pokemon = models.ForeignKey(Ranking, on_delete=models.CASCADE)
-    opponent = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
-              

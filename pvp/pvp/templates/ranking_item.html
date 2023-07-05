@@ -1,10 +1,11 @@
+{% load ranking_tags %}
 <div class="rankings-container" _="on intersection(intersecting) having threshold 0.5 if intersecting transition opacity to 1 else transition opacity to 0.8 ">
-    <div class="rank {{ranking.pokemon.types|first}}" type-1="{{ranking.pokemon.types|first}}" type-2="{{ranking.pokemon.types|last}}" data="{{ranking.pokemon.species_id}}" _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}}">
+    <div class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}" _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}}">
         <div class="expand-label"></div>
         <div class="name-container">
             <span class="number">#{{ranking.position}}</span>
-            <span class="name">{{ranking.pokemon.species_name}}</span>
-            {{ranking.move_str|safe}}
+            <span class="name">{{ranking.speciesName}}</span>
+            {{ranking.moveset|move_str|safe}}
         </div>
         <div class="rating-container">
             <div class="rating score-rating">{{ranking.score}}</div>

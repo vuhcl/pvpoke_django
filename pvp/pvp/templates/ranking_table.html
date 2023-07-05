@@ -5,11 +5,11 @@
         hx-target="#target"
         hx-swap="beforeend">
         {% for ranking in rankings %}
-            {% include "ranking_item.html" %}
+            {% include "ranking_item.html" with p=ranking.speciesId %}
         {% endfor %}
     </div>
 {% else %}
     {% for ranking in rankings %}
-        {% include "ranking_item.html" %}
+        {% include "ranking_item.html" with p=ranking.speciesId %}
     {% endfor %}
 {% endif %}

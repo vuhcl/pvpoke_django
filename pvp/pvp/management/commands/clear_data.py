@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from pvp.models import Format, Pokemon, FastMove, ChargedMove, Ranking
+from pvp.models import Format, Pokemon, FastMove, ChargedMove
 
 class Command(BaseCommand):
     help = 'Clear data objects'
@@ -9,4 +9,3 @@ class Command(BaseCommand):
         Pokemon.objects.all().delete()
         FastMove.objects.all().delete()
         ChargedMove.objects.all().delete()
-        Ranking.objects.all().delete()
