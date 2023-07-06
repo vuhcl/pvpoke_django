@@ -19,7 +19,6 @@ def move_count(fm:str, cm:str) -> list[int]:
 @lru_cache
 @register.filter
 def charged_move_str(fm:str, cm:str) -> str:
-    fast_move = FastMove.objects.get(move_id=fm)
     charged_move = ChargedMove.objects.get(move_id=cm)
     mc = move_count(fm, cm)
     cm_count = str(mc[0])
@@ -56,4 +55,23 @@ def type1(id:str) -> str:
 @register.filter
 def type2(id:str) -> str:
     return get_pokemon(id).type2
+
+@lru_cache
+@register.filter
+def name(id:str) -> str:
+    return get_pokemon(id).species_name
+
+@lru_cache
+@register.filter
+def rating(rating:int) -> str:
+    if rating == 500:
+        return "tie"
+    elif 250 < rating < 500:
+        return "close-loss"
+    elif rating <= 250:
+        return "loss"
+    elif 500 < rating < 750:
+        return "close-win"
+    else:
+        return "win"
     

@@ -17,7 +17,7 @@ def load_ranking_context(format="all", cp="1500", category="overall"):
         rankings[i]["position"] = i+1
     return rankings
 
-def get_page_by_request(request, queryset, paginate_by=24):
+def get_page_by_request(request, queryset, paginate_by=20):
     return Paginator(queryset, per_page=paginate_by).get_page(request.GET.get("page", default=1))
 
 @require_GET

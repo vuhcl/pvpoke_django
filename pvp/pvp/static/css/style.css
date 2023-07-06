@@ -2319,7 +2319,7 @@ a.download-csv {
 }
 
 .rankings-container {
-  max-height: 600px;
+  max-height: 500px;
   overflow-y: scroll;
 }
 .rankings-container.threats, .rankings-container.alternatives {

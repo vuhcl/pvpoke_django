@@ -27,5 +27,5 @@ urlpatterns = [
     path('rankings/<str:format>/<str:cp>/', rankings.rankings, name='rankings'),
     path('rankings/<str:format>/<str:cp>/<str:category>/', rankings.rankings, name='rankings'),
     path('team_builder/', views.index, name='team'),
-    path('tab/<str:tab>', tab.get_tab, name='tab'),
+    path('tab/<str:tab>/', tab.get_tab, name='tab'),
 ]

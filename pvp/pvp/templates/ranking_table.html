@@ -1,14 +1,15 @@
 {% if rankings.has_next %}
-    <div id="target" 
-        hx-get="?page={{rankings.next_page_number}}" 
-        hx-trigger="intersect once"
-        hx-target="#target"
-        hx-swap="beforeend">
-        {% for ranking in rankings %}
-            {% include "ranking_item.html" with p=ranking.speciesId %}
-        {% endfor %}
-    </div>
-{% else %}
+    {% for ranking in rankings %}
+        {% if forloop.last %}
+            <div hx-target="this" hx-trigger="revealed" hx-swap="afterend" hx-get="?page={{rankings.next_page_number}}"> 
+                {% include "ranking_item.html" with p=ranking.speciesId %}
+            </div>
+        {% else %}
+                {% include "ranking_item.html" with p=ranking.speciesId %}
+        {% endif %}
+    {% endfor %}
+
+    {% else %}
     {% for ranking in rankings %}
         {% include "ranking_item.html" with p=ranking.speciesId %}
     {% endfor %}

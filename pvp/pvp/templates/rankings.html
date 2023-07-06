@@ -2,49 +2,46 @@
 {% load static %}
 {% block title %}{{current_scenario.format}} Rankings | PvPoke{% endblock %}
 {% block main %}
-  <h1>Rankings</h1>
-  <div class="section league-select-container white" hx-target="#rankings" hx-ext="preload">
-    <div class="ranking-filters flex" hx-trigger="change">
-      <div class="ranking-filter">
-        <label for="format-select"><h4>Format</h4><label>
-        <select class="format-select" name="format" hx-push-url="true">
-          {% for format in formats %}
-            <option hx-get="{{format.get_absolute_url}}{{current_scenario.category}}"
-            value="{{format}}">{{format}}</option>
-          {% endfor %}
-        </select>
-      </div>
-      
-      <div class="ranking-filter">
-        <label for="category-select"><h4>Sort By</h4><label>
-        <select class="category-select" name="category">
-          {% for category in categories %}
-            <option hx-get="{{current_scenario.get_absolute_url}}"
-             value="{{category}}">{{category|capfirst}}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </div>
-    
-    <div class="ranking-checks flex">
-        <div class="check move-counts" _="on click toggle .on on me then toggle .show-move-counts on .rankings-container" style="margin-bottom:10px; margin-right:15px;"><span></span>Show move counts</div>
-        <div class="check tabs" _="on click toggle .on on me then toggle .detail-tabs-on on .rankings-container then toggle .active on .detail-tab-nav.a" style="margin-bottom:10px; margin-right:15px;"><span></span>Show details in tabs</div>
-    </div>
-
-    <div class="poke-search-container">
-        <input class="poke-search" context="ranking-search" type="text" placeholder="Search Pokemon" hx-post="/middleware-tester/table/" hx-trigger="keyup changed delay:100ms"/>
-        <a href="#" class="search-info" title="Search Help">?</a>
-        <a href="#" class="search-traits" title="Search Traits">+</a>
-    </div>
-
-    <div hx-get="{{current_scenario.get_absolute_url}}/" hx-trigger="load" class="rankings-container clear">
-      <div class="ranking-header">Pokemon</div>
-      <div class="ranking-header right">Score</div>
-      <div id="rankings" class="rankings-container clear" hx-swap="outerHTML">
-        <h2 class="loading">Loading data <img id="indicator" width="20" src="{% static "img/bars.svg" %}"/></h2>
-      </div>
-    </div>
-
-</div>
+	<h1>Rankings</h1>
+	<div class="section league-select-container white">
+		<div class="ranking-filters flex" hx-target="#rankings" hx-trigger="change">
+			<div class="ranking-filter">
+				<label for="format-select"><h4>Format</h4><label>
+				<select class="format-select" name="format" hx-push-url="true">
+					{% for format in formats %}
+					<option hx-get="{{format.get_absolute_url}}{{current_scenario.category}}" value="{{format}}">{{format}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			
+			<div class="ranking-filter">
+				<label for="category-select"><h4>Sort By</h4><label>
+				<select class="category-select" name="category">
+					{% for category in categories %}
+					<option hx-get="{{current_scenario.get_absolute_url}}" value="{{category}}">{{category|capfirst}}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+			
+		<div class="ranking-checks flex">
+			<div class="check move-counts" _="on click toggle .on on me then toggle .show-move-counts on .rankings-container" style="margin-bottom:10px; margin-right:15px;"><span></span>Show move counts</div>
+			<div class="check tabs" _="on click toggle .on on me then toggle .detail-tabs-on on .rankings-container then toggle .active on .detail-tab-nav.a" style="margin-bottom:10px; margin-right:15px;"><span></span>Show details in tabs</div>
+		</div>
+		
+		<div class="poke-search-container">
+			<input class="poke-search" context="ranking-search" type="text" placeholder="Search Pokemon" hx-trigger="keyup changed delay:100ms"/>
+			<a href="#" class="search-info" title="Search Help">?</a>
+			<a href="#" class="search-traits" title="Search Traits">+</a>
+		</div>
+	
+		<div class="ranking-header">Pokemon</div>
+		<div class="ranking-header right">Score</div>
+		<div class="rankings-container clear" >
+			<div id="rankings" class="rankings-container">
+				<h2 hx-target="#rankings" hx-get="{{current_scenario.get_absolute_url}}/" hx-trigger="load" class="loading">Loading data <img id="indicator" width="20" src="{% static "img/bars.svg" %}"/></h2>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

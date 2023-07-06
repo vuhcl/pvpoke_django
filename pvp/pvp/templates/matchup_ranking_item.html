@@ -1,0 +1,12 @@
+{% load ranking_tags %}
+<div class="rank {{opponent|type1}}">
+    <div class="name-container">
+        <span class="number">#{{num}}</span>
+        <span class="name">{{opponent|name}}</span>
+    </div>
+    <div class="rating-container">
+        <a target="#" href="{% url "battle" %}" class="rating {{rating|rating}}">
+            <span></span>{{rating}}<i></i>
+        </a>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 {% load ranking_tags %}
-<div class="rankings-container" _="on intersection(intersecting) having threshold 0.5 if intersecting transition opacity to 1 else transition opacity to 0.8 ">
+<div class="rankings-container clear detail-tabs-on">
     <div class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}" _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}}">
         <div class="expand-label"></div>
         <div class="name-container">
@@ -11,22 +11,26 @@
             <div class="rating score-rating">{{ranking.score}}</div>
             <div class="clear"></div>
         </div>
-        <div id="detail-{{ranking.position}}" class="details">
-            <div id="tabs" hx-target="#tabs-contents" class="detail-section detail-tab-nav" _="on htmx:afterOnLoad take .active for event.target">
+        <div class="details active" id="detail-{{ranking.position}}">
+            <div class="detail-section detail-tab-nav" id="tabs" hx-target="#tabs-contents" hx-vals="{'ranking': {{ranking}}}" _="on htmx:afterOnLoad take .active for event.target">
                 <a class="tab-moves active" hx-get="{% url "tab" "matchups"%}"><span class="icon"></span>Matchups</a>
                 <a class="tab-moves" hx-get="{% url "tab" "moves"%}"><span class="icon"></span>Moves</a>
                 <a class="tab-stats" hx-get="{% url "tab" "stats"%}"><span class="icon"></span>Stats</a>
                 <a class="tab-moves" hx-get="{% url "tab" "misc"%}"><span class="icon"></span>Misc</a>
             </div>
-        
-            <div id="tab-contents" hx-get="/tab/matchups" hx-trigger="load" class="detail-tab active"></div>
-        
-            {% include "tab_matchups.html"%}
-            {% include "tab_stats.html"%}
-            {% include "tab_moves.html"%}
-            <div class="clear"></div>
-            {% include "tab_misc.html"%}
+            <div class="detail-tabs-on">
+                <div id="tab-contents" hx-get="/tab/matchups" hx-trigger="load" class="detail-tab"></div>   
+                {% include "tab_matchups.html"%}
+                {% include "tab_stats.html"%}
+                {% include "tab_moves.html"%}
+                <div class="clear"></div>
+                {% include "tab_misc.html"%}
+            </div>
+            <div class="share-link detail-section"><input type="text" readonly="">
+                <div class="copy">Copy</div>
+            </div>
         </div>
-    </div>    
-</div>
-    
+
+
+    </div> 
+</div>       
