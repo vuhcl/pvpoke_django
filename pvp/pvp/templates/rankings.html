@@ -26,7 +26,7 @@
 			
 		<div class="ranking-checks flex">
 			<div class="check move-counts" _="on click toggle .on on me then toggle .show-move-counts on .rankings-container" style="margin-bottom:10px; margin-right:15px;"><span></span>Show move counts</div>
-			<div class="check tabs" _="on click toggle .on on me then toggle .detail-tabs-on on .rankings-container then toggle .active on .detail-tab-nav.a" style="margin-bottom:10px; margin-right:15px;"><span></span>Show details in tabs</div>
+			<div class="check tabs" _="on click toggle .on on me then toggle between .tabs and .page on .details" style="margin-bottom:10px; margin-right:15px;"><span></span>Show details in tabs</div>
 		</div>
 		
 		<div class="poke-search-container">
@@ -38,7 +38,7 @@
 		<div class="ranking-header">Pokemon</div>
 		<div class="ranking-header right">Score</div>
 		<div class="rankings-container clear" >
-			<div id="rankings" class="rankings-container">
+			<div id="rankings" class="rankings-container ">
 				<h2 hx-target="#rankings" hx-get="{{current_scenario.get_absolute_url}}/" hx-trigger="load" class="loading">Loading data <img id="indicator" width="20" src="{% static "img/bars.svg" %}"/></h2>
 			</div>
 		</div>

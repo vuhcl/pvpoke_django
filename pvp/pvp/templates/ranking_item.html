@@ -11,26 +11,22 @@
             <div class="rating score-rating">{{ranking.score}}</div>
             <div class="clear"></div>
         </div>
-        <div class="details active" id="detail-{{ranking.position}}">
+        <div class="details page" id="detail-{{ranking.position}}">
+            {% include "tab_matchups.html"%}
+            {% include "tab_stats.html"%}
+            {% include "tab_moves.html"%}
+            <div class="clear"></div>
+            {% include "tab_misc.html"%}
+        </div>
+        
+        <div class="details tabs">
             <div class="detail-section detail-tab-nav" id="tabs" hx-target="#tabs-contents" hx-vals="{'ranking': {{ranking}}}" _="on htmx:afterOnLoad take .active for event.target">
                 <a class="tab-moves active" hx-get="{% url "tab" "matchups"%}"><span class="icon"></span>Matchups</a>
                 <a class="tab-moves" hx-get="{% url "tab" "moves"%}"><span class="icon"></span>Moves</a>
                 <a class="tab-stats" hx-get="{% url "tab" "stats"%}"><span class="icon"></span>Stats</a>
                 <a class="tab-moves" hx-get="{% url "tab" "misc"%}"><span class="icon"></span>Misc</a>
             </div>
-            <div class="detail-tabs-on">
-                <div id="tab-contents" hx-get="/tab/matchups" hx-trigger="load" class="detail-tab"></div>   
-                {% include "tab_matchups.html"%}
-                {% include "tab_stats.html"%}
-                {% include "tab_moves.html"%}
-                <div class="clear"></div>
-                {% include "tab_misc.html"%}
-            </div>
-            <div class="share-link detail-section"><input type="text" readonly="">
-                <div class="copy">Copy</div>
-            </div>
+            <div id="tab-contents" hx-target="#tab-contents" hx-get="/tab/matchups" hx-swap="outerHTML" hx-trigger="load" class="detail-tab-on"></div>
         </div>
-
-
     </div> 
 </div>       
