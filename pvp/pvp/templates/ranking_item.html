@@ -1,6 +1,6 @@
 {% load ranking_tags %}
 <div class="rankings-container clear detail-tabs-on">
-    <div class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}" _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}}">
+    <div class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}" _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}} then toggle .active on #detail-{{ranking.position}}.children ">
         <div class="expand-label"></div>
         <div class="name-container">
             <span class="number">#{{ranking.position}}</span>
