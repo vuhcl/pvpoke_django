@@ -25,21 +25,25 @@
 		</div>
 			
 		<div class="ranking-checks flex">
-			<div class="check move-counts" _="on click toggle .on on me then toggle .show-move-counts on .rankings-container" style="margin-bottom:10px; margin-right:15px;"><span></span>Show move counts</div>
-			<div class="check tabs" _="on click toggle .on on me then toggle between .tabs and .page on .details" style="margin-bottom:10px; margin-right:15px;"><span></span>Show details in tabs</div>
+			<button class="check move-counts" _="on click toggle .on then toggle .show-move-counts on .rankings-container" style="margin-bottom:10px; margin-right:15px;"><span></span>Show move counts</button>
+			<button class="check tabs" _="on click toggle .on 
+							then toggle .active on .detail-tab-nav
+							then toggle .active on .detail-tab" style="margin-bottom:10px; margin-right:15px;"><span></span>Show details in tabs</button>
+			<button class="check move-stats" _="on click toggle .on 
+							then toggle *display on .stats-container.name-container " style="margin-bottom:10px; margin-right:15px"><span></span>Show move stats</button>
 		</div>
 		
 		<div class="poke-search-container">
 			<input class="poke-search" context="ranking-search" type="text" placeholder="Search Pokemon" hx-trigger="keyup changed delay:100ms"/>
-			<a href="#" class="search-info" title="Search Help">?</a>
-			<a href="#" class="search-traits" title="Search Traits">+</a>
+			<button class="search-info" title="Search Help">?</button>
+			<button href="#" class="search-traits" title="Search Traits">+</button>
 		</div>
 	
 		<div class="ranking-header">Pokemon</div>
 		<div class="ranking-header right">Score</div>
 		<div class="rankings-container clear" >
 			<div id="rankings" class="rankings-container ">
-				<h2 hx-target="#rankings" hx-get="{{current_scenario.get_absolute_url}}/" hx-trigger="load" class="loading">Loading data <img id="indicator" width="20" src="{% static "img/bars.svg" %}"/></h2>
+				<h2 hx-target="#rankings" hx-push-url="true" hx-get="{{current_scenario.get_absolute_url}}/" hx-trigger="load" class="loading">Loading data <img id="indicator" width="20" src="{% static "img/bars.svg" %}"/></h2>
 			</div>
 		</div>
 	</div>

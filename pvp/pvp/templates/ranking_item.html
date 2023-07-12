@@ -1,7 +1,8 @@
 {% load ranking_tags %}
-<div class="rankings-container clear detail-tabs-on">
-    <div class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}" _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}} then toggle .active on #detail-{{ranking.position}}.children ">
-        <div class="expand-label"></div>
+<div class="rankings-container clear">
+    <div hx-target="#move-tab" hx-get="{{current_scenario.get_absolute_url}}{{ranking.position}}/moves/" hx-trigger="click once" hx-swap="outerHTML"
+        _="on click toggle .selected on #{{ranking.position}} then toggle .active on my .details" id="{{ranking.position}}" class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}">
+        <div class="expand-label" ""></div>
         <div class="name-container">
             <span class="number">#{{ranking.position}}</span>
             <span class="name">{{ranking.speciesName}}</span>
@@ -11,22 +12,51 @@
             <div class="rating score-rating">{{ranking.score}}</div>
             <div class="clear"></div>
         </div>
-        <div class="details page" id="detail-{{ranking.position}}">
-            {% include "tab_matchups.html"%}
-            {% include "tab_stats.html"%}
-            {% include "tab_moves.html"%}
-            <div class="clear"></div>
-            {% include "tab_misc.html"%}
-        </div>
-        
-        <div class="details tabs">
-            <div class="detail-section detail-tab-nav" id="tabs" hx-target="#tabs-contents" hx-vals="{'ranking': {{ranking}}}" _="on htmx:afterOnLoad take .active for event.target">
-                <a class="tab-moves active" hx-get="{% url "tab" "matchups"%}"><span class="icon"></span>Matchups</a>
-                <a class="tab-moves" hx-get="{% url "tab" "moves"%}"><span class="icon"></span>Moves</a>
-                <a class="tab-stats" hx-get="{% url "tab" "stats"%}"><span class="icon"></span>Stats</a>
-                <a class="tab-moves" hx-get="{% url "tab" "misc"%}"><span class="icon"></span>Misc</a>
+
+    <!-- expanded details -->
+        <div id="detail-{{ranking.position}}" class="details">
+        <!-- tabs nav -->
+            <div class="detail-section detail-tab-nav" _="on click take .active from my children for event.target halt then show .detail-tab if its @tab match event.target">
+                <a class="tab-moves active" tab="matchups"><span class="icon"></span>Matchups</a>
+                <a class="tab-moves" tab="moves"><span class="icon"></span>Moves</a>
+                <a class="tab-stats" tab="stats"><span class="icon"></span>Stats</a>
+                <a class="tab-moves" tab="misc"><span class="icon"></span>Misc</a>
             </div>
-            <div id="tab-contents" hx-target="#tab-contents" hx-get="/tab/matchups" hx-swap="outerHTML" hx-trigger="load" class="detail-tab-on"></div>
+        <!-- matchups tab -->        
+            <div class="detail-tab active" tab="matchups">
+            <!-- matchups -->
+                <div class="detail-section float margin">
+                    <div class="ranking-header">Key Wins</div>
+                    <div class="ranking-header right">Battle Rating</div>
+                    <div class="matchups clear">
+                        {% for matchup in ranking.matchups %}
+                            {% include "matchup_ranking_item.html" with num=forloop.counter opponent=matchup.opponent rating=matchup.rating %}
+                        {% endfor %}
+                    </div>
+                </div>
+            <!-- counters -->
+                <div class="detail-section float">
+                    <div class="ranking-header">Key Losses</div>
+                    <div class="ranking-header right">Battle Rating</div>
+                    <div class="counters clear">
+                        {% for c in ranking.counters %}
+                            {% include "matchup_ranking_item.html" with num=forloop.counter opponent=c.opponent rating=c.rating %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="multi-battle-link"><p>See all of <b class="name">{{ranking.speciesName}}</b> matchups:</p>
+                    <a class="button" href="#">{{ranking.speciesName}} vs. {{current_scenario.format}}</a>
+                </div>                    
+            </div>
+        <!-- moves tab -->     
+            <div class="detail-tab" tab="moves" id="move-tab">
+                {% include "move_tab.html" with fast_moves=fast_moves %}
+            </div>
+        <!-- stats tab -->
+            <div class="detail-tab" tab="stats">{% include "tab_stats.html"%}</div>
+        <!-- misc tab -->
+            <div class="detail-tab" tab="misc">{% include "tab_misc.html"%}</div>
+            </div>
         </div>
     </div> 
-</div>       
+</div>      

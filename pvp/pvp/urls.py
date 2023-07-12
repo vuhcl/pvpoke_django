@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from . import views
-from .views import rankings, tab
+from .views import rankings
 from django.urls import path
 
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path('rankings/', rankings.rankings, name='rankings'),
     path('rankings/<str:format>/<str:cp>/', rankings.rankings, name='rankings'),
     path('rankings/<str:format>/<str:cp>/<str:category>/', rankings.rankings, name='rankings'),
+    path('rankings/<str:format>/<str:cp>/<str:category>/<int:pos>/moves/', rankings.get_move),
     path('team_builder/', views.index, name='team'),
-    path('tab/<str:tab>/', tab.get_tab, name='tab'),
+    
 ]

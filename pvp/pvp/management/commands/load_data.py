@@ -18,17 +18,17 @@ class Command(BaseCommand):
     
     @lru_cache
     def load_formats(self):
-        Format.objects.create(title="Great League", cup="all", cp=1500, meta="great")
-        Format.objects.create(title="Ultra League", cup="all", cp=2500, meta="ultra")
-        Format.objects.create(title="Master League", cup="all", cp=10000, meta="master")
+        Format.objects.get_or_create(title="Great League", cup="all", cp=1500, meta="great")
+        Format.objects.get_or_create(title="Ultra League", cup="all", cp=2500, meta="ultra")
+        Format.objects.get_or_create(title="Master League", cup="all", cp=10000, meta="master")
     
         format_data = self.open_file("pvp/fixtures/formats.json")
         for format in format_data:
-            Format.objects.create(title=format["title"], cup=format.get("cup"), cp=format["cp"], meta=format["meta"], show=format["showFormat"])
+            Format.objects.get_or_create(title=format["title"], cup=format.get("cup"), cp=format["cp"], meta=format["meta"], show=format["showFormat"])
     
     def create_move(self, m):
         if m.get('energy') == 0:
-            FastMove.objects.create(
+            FastMove.objects.get_or_create(
                 name=m["name"],
                 move_id=m["moveId"],
                 abbreviation=m.get("abbreviation", None),  
@@ -36,10 +36,9 @@ class Command(BaseCommand):
                 type=m.get("type","none"),
                 power=m.get("power", 0),
                 cooldown=m.get("cooldown",500),
-                archetype=m.get("archetype","General")
                 )
         else:
-            ChargedMove.objects.create(
+            ChargedMove.objects.get_or_create(
                 name=m["name"],
                 move_id=m["moveId"],
                 energy=m["energy"],
@@ -47,7 +46,6 @@ class Command(BaseCommand):
                 type=m.get("type","none"),
                 power=m.get("power", 0),
                 cooldown=m.get("cooldown",500),
-                archetype=m.get("archetype","General"),
                 buffs=m.get("buffs", None),
                 buff_target=m.get("buffTarget", None),
                 buff_self=m.get("buffsSelf", None),
@@ -56,13 +54,14 @@ class Command(BaseCommand):
                 )
     
     def create_pokemon(self, pokemon):
-        obj = Pokemon.objects.create(
+        obj, _ = Pokemon.objects.get_or_create(
             dex=pokemon["dex"],
             species_name=pokemon["speciesName"],
             species_id=pokemon["speciesId"],
             base_stats=pokemon["baseStats"],
             types=pokemon["types"],
             elite_moves=pokemon.get("eliteMoves", None),
+            legacy_moves=pokemon.get("legacyMoves", None),
             level_25CP=pokemon.get("level25CP", None),
             default_ivs=pokemon.get("defaultIVs", None),
             buddy_distance=pokemon.get("buddyDistance", None),

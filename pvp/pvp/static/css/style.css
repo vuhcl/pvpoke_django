@@ -18,7 +18,7 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-position: center bottom;
-  min-height: 100%;
+  max-height: 100%;
 }
 
 .clear {
@@ -156,7 +156,6 @@ header .hamburger .meat {
   display: flex;
   justify-content: center;
   background: #4b8f56;
-  padding: 3px;
   width: 100%;
   position: fixed;
   z-index: 25;
@@ -2315,7 +2314,7 @@ a.download-csv {
 }
 .ranking-header.right {
   text-align: right;
-  padding-right: 20px;
+  padding-right: 15px;
 }
 
 .rankings-container {
@@ -2348,15 +2347,15 @@ a.download-csv {
   border: 3px solid #000;
 }
 .rankings-container.pokebox-list .name-container {
-  float: none;
-  padding: 10px;
+  padding: 8px;
 }
 
 .rank {
   padding: 5px 5px;
   border-radius: 8px;
   margin-bottom: 5px;
-  margin-right: 8px;
+  margin-right: 6px;
+  margin-left: 3px;
   border-left: 20px solid rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -2419,14 +2418,14 @@ a.download-csv {
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 8px;
   text-align: right;
-  padding: 5px 8px;
+  padding: 5px 5px;
 }
 .rank .rating-container .rating.score-rating {
-  width: 60px !important;
+  width: 50px;
 }
 .rank .rating-container .rating span {
   margin-left: 0;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 .rank .moves {
   display: flex;
@@ -2881,7 +2880,7 @@ a.download-csv {
 
 .ranking-filters .ranking-filter {
   max-width: 60%;
-  padding-right: 20px;
+  padding-right: 10px;
   box-sizing: border-box;
 }
 .ranking-filters .ranking-filter:last-of-type {
@@ -2908,9 +2907,6 @@ a.download-csv {
 }
 
 /* Detail tabs */
-.detail-tab-nav {
-  display: none;
-}
 
 .detail-tab {
   display: flex;
@@ -2920,14 +2916,17 @@ a.download-csv {
 .detail-tab.active {
   display: flex;
 }
+.detail-tab-nav {
+  display: none;
+}
 
-.detail-tabs-on .detail-tab-nav {
+.detail-tab-nav.active {
   margin-top: 10px;
   flex-basis: 100%;
   display: flex;
   flex-wrap: wrap;
 }
-.detail-tabs-on .detail-tab-nav a {
+.detail-tab-nav a {
   color: #111;
   text-decoration: none;
   display: flex;
@@ -2938,47 +2937,44 @@ a.download-csv {
   border-radius: 8px;
   margin-right: 5px;
 }
-.detail-tabs-on .detail-tab-nav a .icon {
+.detail-tab-nav a .icon {
   display: block;
   background-size: 200%;
   background-repeat: no-repeat;
   background-position: 0 center;
   margin: 0 4px 0 2px;
 }
-.detail-tabs-on .detail-tab-nav a[tab=matchups] .icon {
+.detail-tab-nav a[tab=matchups] .icon {
   width: 18px;
   height: 18px;
   background-image: url("../img/detail-tab-matchups.png");
 }
-.detail-tabs-on .detail-tab-nav a[tab=moves] .icon {
+.detail-tab-nav a[tab=moves] .icon {
   width: 17px;
   height: 17px;
   background-image: url("../img/detail-tab-moves.png");
 }
-.detail-tabs-on .detail-tab-nav a[tab=misc] .icon {
+.detail-tab-nav a[tab=misc] .icon {
   width: 17px;
   height: 5px;
   background-image: url("../img/detail-tab-misc.png");
 }
-.detail-tabs-on .detail-tab-nav a[tab=stats] .icon {
+.detail-tab-nav a[tab=stats] .icon {
   width: 15px;
   height: 17px;
   background-image: url("../img/detail-tab-stats.png");
 }
-.detail-tabs-on .detail-tab-nav a:hover {
+.detail-tab-nav a:hover {
   background-color: rgba(0, 0, 0, 0.15);
 }
-.detail-tabs-on .detail-tab-nav a.active {
+.detail-tab-nav a.active {
   background-color: #111;
   color: #f9fdff;
 }
-.detail-tabs-on .detail-tab-nav a.active .icon {
+.detail-tab-nav a.active .icon {
   background-position: 100% center;
 }
-.detail-tabs-on .detail-tab {
-  display: none;
-}
-.detail-tabs-on .detail-tab.active {
+.detail-tab {
   display: flex;
 }
 
@@ -3114,7 +3110,6 @@ a.download-csv {
 }
 
 .ranking-categories {
-  float: right;
   display: flex;
   flex-wrap: wrap;
 }
@@ -3261,7 +3256,6 @@ a.download-csv {
   max-width: 350px;
 }
 .team-advanced .poke.flex {
-  float: none;
   max-width: none;
   flex-wrap: wrap;
 }
@@ -3705,7 +3699,7 @@ a.rating i:after, .rating-container .rating i:after, .summary .rating i:after,
   font-size: 10px;
   line-height: 0;
   position: absolute;
-  right: 8px;
+  right: 6px;
 }
 a.rating.win, .rating-container .rating.win, .summary .rating.win,
 .stats-table .rating.win, .train-table .rating.win {
@@ -4842,7 +4836,7 @@ a.pokebattler {
   display: flex;
 }
 .custom-rankings .advanced .flex-section div {
-  margin-right: 30px;
+  margin-right: 20px;
 }
 .custom-rankings .advanced .format-select {
   display: none;
@@ -5177,7 +5171,7 @@ a.pokebattler {
   }
 
   .rankings-container {
-    max-height: 1000px;
+    max-height: 800px;
   }
   .rankings-container.pokebox-list {
     max-height: 600px;
