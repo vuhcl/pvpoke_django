@@ -2,15 +2,15 @@
     {% for ranking in rankings %}
         {% if forloop.last %}
             <div hx-target="this" hx-trigger="revealed" hx-swap="afterend" hx-get="?page={{rankings.next_page_number}}"> 
-                {% include "ranking_item.html" with p=ranking.speciesId %}
+                {% include "ranking_item.html" with p=ranking.speciesId scenario=current_scenario%}
             </div>
         {% else %}
-                {% include "ranking_item.html" with p=ranking.speciesId %}
+                {% include "ranking_item.html" with p=ranking.speciesId scenario=current_scenario%}
         {% endif %}
     {% endfor %}
 
     {% else %}
     {% for ranking in rankings %}
-        {% include "ranking_item.html" with p=ranking.speciesId %}
+        {% include "ranking_item.html" with p=ranking.speciesId scenario=current_scenario%}
     {% endfor %}
 {% endif %}

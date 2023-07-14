@@ -1,7 +1,7 @@
 {% load ranking_tags %}
 <div class="rankings-container clear">
-    <div hx-target="#move-tab" hx-get="{{current_scenario.get_absolute_url}}{{ranking.position}}/moves/" hx-trigger="click once" hx-swap="outerHTML"
-        _="on click toggle .selected on #{{ranking.position}} then toggle .active on my .details" id="{{ranking.position}}" class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}">
+    <div hx-target="#move-tab" hx-get="{{ranking.position}}/moves/" hx-trigger="click" hx-swap="outerHTML"
+        _="on click toggle .selected on me then toggle .active on #detail-{{ranking.position}} unless it match .active" pos="{{ranking.position}}" class="rank {{p|type1}}" type-1="{{p|type1}}" type-2="{{p|type2}}" data="{{p}}">
         <div class="expand-label" ""></div>
         <div class="name-container">
             <span class="number">#{{ranking.position}}</span>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="multi-battle-link"><p>See all of <b class="name">{{ranking.speciesName}}</b> matchups:</p>
-                    <a class="button" href="#">{{ranking.speciesName}} vs. {{current_scenario.format}}</a>
+                    <a class="button" href="#">{{ranking.speciesName}} vs. {{scenario.format}}</a>
                 </div>                    
             </div>
         <!-- moves tab -->     

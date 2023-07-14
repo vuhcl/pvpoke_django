@@ -10,7 +10,7 @@
                 <div class="move-detail-template rank {{fast_move.type}}"
                     data="{{fast_move.move_id}}" 
                     _="init add .selected when {{moveset}} contains my [@data]
-						on click toggle .selected halt">
+                    on click call event.preventDefault()">
                         
                     <div class="name-container flex">
                         <span id="move" class="name">{{info.name}}</span>

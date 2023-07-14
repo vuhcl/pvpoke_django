@@ -194,7 +194,7 @@ class Scenario(models.Model):
     format = models.ForeignKey(Format, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        return self.category.capitalize()
+        return self.format.title
     
     def get_absolute_url(self):
         from django.urls import reverse
